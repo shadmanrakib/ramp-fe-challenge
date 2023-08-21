@@ -1,4 +1,5 @@
 import { useState } from "react"
+import { useCustomFetch } from "src/hooks/useCustomFetch"
 import { InputCheckbox } from "../InputCheckbox"
 import { TransactionPaneComponent } from "./types"
 
@@ -8,6 +9,7 @@ export const TransactionPane: TransactionPaneComponent = ({
   setTransactionApproval: consumerSetTransactionApproval,
 }) => {
   const [approved, setApproved] = useState(transaction.approved)
+  const customFetch = useCustomFetch()
 
   return (
     <div className="RampPane">
@@ -29,6 +31,10 @@ export const TransactionPane: TransactionPaneComponent = ({
           })
 
           setApproved(newValue)
+
+          // if we change the way we cache and fetch, we could potentially only
+          // invalid certain transactions and only refetch them
+          customFetch.clearCache()
         }}
       />
     </div>
